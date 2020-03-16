@@ -87,10 +87,9 @@ public class UserServiceImplTest {
 
     @Test
     void deleteUserByUsername() {
-
         when(userRepository.findByUsername(TestConstants.NAME)).thenReturn(Optional.of(MockUserFactory.getUserEntity()));
 
-        DeleteResponseDTO expected = MockGeneralFactory.getDeleteResponseDTO("Delete Success", 1);
+        DeleteResponseDTO expected = MockGeneralFactory.getDeleteResponseDTO(TestConstants.DELETE_MESSAGE, 1);
         DeleteResponseDTO actual = userService.deleteUserByUsername(TestConstants.NAME);
         Assert.assertEquals(expected, actual);
 

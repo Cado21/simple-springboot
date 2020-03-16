@@ -1,5 +1,6 @@
 package com.fresh.restapi.services.item.impl;
 
+import com.fresh.restapi.constants.Constants;
 import com.fresh.restapi.converters.ItemConverter;
 import com.fresh.restapi.dtos.requests.item.ItemRequestDTO;
 import com.fresh.restapi.dtos.requests.item.ItemUpdateRequestDTO;
@@ -56,7 +57,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public ItemResponseDTO updateItemById(Long id, ItemUpdateRequestDTO request) {
+    public ItemResponseDTO updateItemById(Long id, ItemRequestDTO request) {
         Optional<ItemEntity> optionalItem = itemRepo.findById(id);
 
         ItemEntity newItem = optionalItem.orElseThrow(() ->
@@ -80,6 +81,6 @@ public class ItemServiceImpl implements ItemService {
             deletedCount = 1;
             itemRepo.deleteById(id);
         }
-        return new DeleteResponseDTO("Delete item success", deletedCount);
+        return new DeleteResponseDTO(Constants.DELETE_MESSAGE, deletedCount);
     }
 }

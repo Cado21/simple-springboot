@@ -62,7 +62,7 @@ public class ItemController {
     @PutMapping(value = "/{id}")
     public ResponseEntity updateItemById(
             @PathVariable Long id,
-            @RequestBody ItemUpdateRequestDTO request
+            @RequestBody ItemRequestDTO request
     ) {
         System.out.println(request);
         ItemResponseDTO dto = itemService.updateItemById(id, request);

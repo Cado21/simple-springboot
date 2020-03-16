@@ -26,7 +26,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 
 @Service
@@ -181,9 +180,9 @@ public class UserServiceImpl implements UserService {
     public DeleteResponseDTO deleteUserByUsername(String username) {
         Optional<UserEntity> optionalUser = userRepo.findByUsername(username);
         boolean userIsExist = optionalUser.isPresent();
-        if(userIsExist) userRepo.deleteByUsername(username);
+        if (userIsExist) userRepo.deleteByUsername(username);
         Integer deletedCount = userIsExist ? 1 : 0;
-        return new DeleteResponseDTO("Delete Success", deletedCount);
+        return new DeleteResponseDTO(Constants.DELETE_MESSAGE, deletedCount);
     }
 
 }

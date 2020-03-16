@@ -11,6 +11,6 @@ public interface ItemService {
     List<ItemResponseDTO> getAllItems();
     ItemResponseDTO getItemById(Long id);
     ItemResponseDTO createNewItem(ItemRequestDTO request);
-    ItemResponseDTO updateItemById(Long id, ItemUpdateRequestDTO request);
+    ItemResponseDTO updateItemById(Long id, ItemRequestDTO request);
     DeleteResponseDTO deleteItemById(Long id );
 }
