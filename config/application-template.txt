@@ -1,0 +1,6 @@
+server:
+  servlet:
+    context-path:
+  port: 8080
+jwt:
+  secret: secret_sekali_hehe
