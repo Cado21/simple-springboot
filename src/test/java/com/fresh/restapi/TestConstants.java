@@ -17,5 +17,8 @@ public class TestConstants {
     public static final String DESC_2 = "DESC_2";
     public static final String URL = "https://www.sample.com/";
     public static final String DELETE_MESSAGE = "Delete Success";
+    public static final String HTTP_METHOD_GET = "GET";
+
     public static final ZonedDateTime DEFAULT_TIME = ZonedDateTime.of(2000, 1, 1, 1, 1, 12, 1, ZoneId.of("UTC"));
+
 }

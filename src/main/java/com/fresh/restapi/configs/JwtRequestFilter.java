@@ -6,6 +6,7 @@ import com.fresh.restapi.exceptions.JwtExpiredException;
 import com.fresh.restapi.exceptions.UnAuthorizedException;
 import com.fresh.restapi.models.user.UserEntity;
 import com.fresh.restapi.repositories.UserRepository;
+import com.fresh.restapi.utils.JwtTokenUtil;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;

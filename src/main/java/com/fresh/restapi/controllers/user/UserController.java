@@ -1,7 +1,7 @@
 package com.fresh.restapi.controllers.user;
 
 import com.fresh.restapi.aspect.CheckPermission;
-import com.fresh.restapi.configs.JwtTokenUtil;
+import com.fresh.restapi.utils.JwtTokenUtil;
 import com.fresh.restapi.constants.API;
 import com.fresh.restapi.converters.ResponseConverter;
 import com.fresh.restapi.dtos.BaseResponseDTO;

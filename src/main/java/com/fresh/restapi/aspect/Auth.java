@@ -1,6 +1,6 @@
 package com.fresh.restapi.aspect;
 
-import com.fresh.restapi.configs.JwtTokenUtil;
+import com.fresh.restapi.utils.JwtTokenUtil;
 import com.fresh.restapi.constants.Security;
 import com.fresh.restapi.exceptions.ForbiddenException;
 import com.fresh.restapi.models.permission.PermissionEntity;

@@ -1,4 +1,4 @@
-package com.fresh.restapi.configs;
+package com.fresh.restapi.utils;
 
 import java.io.Serializable;
 import java.util.Date;

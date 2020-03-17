@@ -4,6 +4,7 @@ package com.fresh.restapi.configs;
 import com.fresh.restapi.constants.API;
 import com.fresh.restapi.repositories.UserRepository;
 import com.fresh.restapi.services.auth.JwtAuthenticationService;
+import com.fresh.restapi.utils.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,8 +19,12 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import javax.sql.DataSource;
+import java.util.Arrays;
 import java.util.Collections;
 
 @Configuration
@@ -40,9 +45,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private JwtTokenUtil jwtTokenUtil;
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
     @Autowired
     public void configAuthentication(AuthenticationManagerBuilder auth)
             throws Exception {
@@ -63,16 +69,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         // We don't need CSRF for this example
         httpSecurity.csrf().disable()
+                .cors()
+                .and()
                 .authorizeRequests()
-        // dont authenticate this particular request
+                // dont authenticate this particular request
                 .antMatchers(
                         API.V1 + API.USERS,
                         API.V1 + API.USERS + "/**"
                 )
                 .permitAll()
-        // all other requests need to be authenticated
+                // all other requests need to be authenticated
                 .and()
-        // make sure we use stateless session; session won't be used to store user's state.
+                // make sure we use stateless session; session won't be used to store user's state.
                 .exceptionHandling()
                 .authenticationEntryPoint(jwtAuthenticationEntryPoint)
                 .and().sessionManagement()
@@ -80,13 +88,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .and().httpBasic().disable()
 
-        // Add a filter to validate the tokens with every request
-        .addFilterBefore(
-                new JwtRequestFilter(
-                        this.jwtTokenUtil,
-                        this.userRepository
-                ),
-                UsernamePasswordAuthenticationFilter.class
-        );
+                // Add a filter to validate the tokens with every request
+                .addFilterBefore(
+                        new JwtRequestFilter(
+                                this.jwtTokenUtil,
+                                this.userRepository
+                        ),
+                        UsernamePasswordAuthenticationFilter.class
+                );
     }
+
 }

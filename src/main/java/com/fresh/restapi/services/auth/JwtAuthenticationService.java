@@ -1,6 +1,6 @@
 package com.fresh.restapi.services.auth;
 
-import com.fresh.restapi.configs.JwtTokenUtil;
+import com.fresh.restapi.utils.JwtTokenUtil;
 import com.fresh.restapi.dtos.AuthenticationCustom;
 import com.fresh.restapi.dtos.requests.user.UserTokenPayloadDTO;
 import com.fresh.restapi.dtos.responses.user.UserLoginResponseDTO;

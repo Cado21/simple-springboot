@@ -1,13 +1,11 @@
 package com.fresh.restapi.dtos.responses.permission;
 
 import com.fresh.restapi.dtos.BaseEntityResponseDTO;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 
 @Data
+@Builder
 @EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
