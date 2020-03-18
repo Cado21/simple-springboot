@@ -43,4 +43,18 @@ public class MockPermissionFactory {
                 .httpMethod(TestConstants.HTTP_METHOD_GET)
                 .build();
     }
+    public static PermissionEntity getPermissionEntity() {
+        return PermissionEntity.builder()
+                .rolePermissions(
+                        Collections.singletonList(
+                                RolePermissionEntity
+                                        .builder()
+                                        .role(MockRoleFactory.getRoleEntity())
+                                        .build()
+                        )
+                )
+                .pathUri(TestConstants.URL)
+                .httpMethod(TestConstants.HTTP_METHOD_GET)
+                .build();
+    }
 }

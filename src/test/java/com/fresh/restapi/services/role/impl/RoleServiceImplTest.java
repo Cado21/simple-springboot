@@ -6,9 +6,8 @@ import com.fresh.restapi.MockRolePermissionFactory;
 import com.fresh.restapi.TestConstants;
 import com.fresh.restapi.converters.RoleConverter;
 import com.fresh.restapi.dtos.responses.role.RoleResponseDTO;
-import com.fresh.restapi.models.permission.PermissionEntity;
 import com.fresh.restapi.models.role.RoleEntity;
-import com.fresh.restapi.models.role.RolePermissionEntity;
+import com.fresh.restapi.repositories.PermissionRepository;
 import com.fresh.restapi.repositories.RolePermissionRepository;
 import com.fresh.restapi.repositories.RoleRepository;
 import com.fresh.restapi.services.role.Impl.RoleServiceImpl;
@@ -20,6 +19,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
@@ -39,6 +39,9 @@ public class RoleServiceImplTest {
     @Mock
     RolePermissionRepository rolePermissionRepository;
 
+    @Mock
+    PermissionRepository permissionRepository;
+
     @BeforeEach
     void setUp() {
         initMocks(this);
@@ -46,16 +49,14 @@ public class RoleServiceImplTest {
 
     @AfterEach
     void tearDown() {
-        verifyNoMoreInteractions(roleRepository, roleConverter, rolePermissionRepository);
+        verifyNoMoreInteractions(roleRepository, roleConverter, permissionRepository);
     }
 
     @Test
     void getAllRoles() {
         when(roleRepository.findAll()).thenReturn(MockRoleFactory.getAllRoleEntities());
-        when(roleConverter.toResponseDTO(MockRoleFactory.getRoleEntity(TestConstants.ROLE_ADMIN), anyList()))
-                .thenReturn(MockRoleFactory.getRoleResponseDTO(TestConstants.ROLE_ADMIN));
-        when(roleConverter.toResponseDTO(MockRoleFactory.getRoleEntity(TestConstants.ROlE_CUSTOMER), anyList()))
-                .thenReturn(MockRoleFactory.getRoleResponseDTO(TestConstants.ROlE_CUSTOMER));
+        when(roleConverter.toResponseDTO(any(RoleEntity.class), anyList()))
+                .thenReturn(MockRoleFactory.getRoleResponseDTO());
         when(rolePermissionRepository.findAllByRole_Name(anyString()))
                 .thenReturn(MockRolePermissionFactory.getAllRolePermissionEntity());
 
@@ -67,19 +68,47 @@ public class RoleServiceImplTest {
         verify(roleConverter, atLeast(1)).toResponseDTO(any(RoleEntity.class), anyList());
         verify(rolePermissionRepository, atLeast(1)).findAllByRole_Name(anyString());
     }
-//    public List<RoleResponseDTO> getAllRoles() {
-//        List<RoleEntity> roles = roleRepository.findAll();
-//        List<RoleResponseDTO> roleResponseDTOList = new ArrayList<>();
-//        for (RoleEntity role : roles) {
-//            List<RolePermissionEntity> rolePermissionEntities = rolePermissionRepository.findAllByRole_Name(role.getName());
-//            List<PermissionEntity> permissions = rolePermissionEntities
-//                    .stream()
-//                    .map(RolePermissionEntity::getPermission)
-//                    .collect(Collectors.toList());
-//            RoleResponseDTO roleResponse = roleConverter.toResponseDTO(role, permissions);
-//            roleResponseDTOList.add(roleResponse);
-//        }
-//        return roleResponseDTOList;
-//    }
+
+    @Test
+    void getRoleById() {
+        when(roleRepository.findById(anyInt())).thenReturn(Optional.of(MockRoleFactory.getRoleEntity()));
+        when(rolePermissionRepository.findAllByRole_Name(anyString())).thenReturn(MockRolePermissionFactory.getAllRolePermissionEntity());
+        when(roleConverter.toResponseDTO(any(RoleEntity.class), anyList())).thenReturn(MockRoleFactory.getRoleResponseDTO());
+
+        RoleResponseDTO expected = MockRoleFactory.getRoleResponseDTO();
+        RoleResponseDTO actual = roleService.getRoleById(anyInt());
+        Assert.assertEquals(expected, actual);
+
+        verify(roleRepository, times(1)).findById(anyInt());
+        verify(rolePermissionRepository, times(1)).findAllByRole_Name(anyString());
+        verify(roleConverter, times(1)).toResponseDTO(any(RoleEntity.class), anyList());
+    }
+
+    @Test
+    void createNewRole() {
+        when(roleRepository.findByName(anyString())).thenReturn(Optional.empty());
+        when(roleConverter.toResponseDTO(any(RoleEntity.class), anyList())).thenReturn(MockRoleFactory.getRoleResponseDTO());
+
+        RoleResponseDTO expected = MockRoleFactory.getRoleResponseDTO();
+        RoleResponseDTO actual = roleService.createNewRole(TestConstants.ROLE_ADMIN, anyList());
+        Assert.assertEquals(expected, actual);
+
+        verify(roleRepository, times(1)).findByName(anyString());
+        verify(roleConverter, times(1)).toResponseDTO(any(RoleEntity.class), anyList());
+    }
+
+    @Test
+    void updateRole() {
+        when(roleRepository.findByName(anyString())).thenReturn(Optional.of(MockRoleFactory.getRoleEntity()));
+        when(permissionRepository.findByHttpMethodAndPathUri(anyString(), anyString())).thenReturn(Optional.of(MockPermissionFactory.getPermissionEntity()));
+        when(roleConverter.toResponseDTO(any(RoleEntity.class), anyList())).thenReturn(MockRoleFactory.getRoleResponseDTO());
+
+        RoleResponseDTO expected = MockRoleFactory.getRoleResponseDTO();
+        RoleResponseDTO actual = roleService.updateRole(TestConstants.ROLE_ADMIN, anyList());
+        Assert.assertEquals(expected, actual);
+
+        verify(roleRepository, times(1)).findByName(anyString());
+        verify(roleConverter, times(1)).toResponseDTO(any(RoleEntity.class), anyList());
+    }
 
 }

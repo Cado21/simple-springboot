@@ -33,7 +33,7 @@ public class MockRoleFactory {
                         .permissions(MockPermissionFactory.getPermissionsResponseDTO())
                         .build(),
                 RoleResponseDTO.builder()
-                        .role(TestConstants.ROlE_CUSTOMER)
+                        .role(TestConstants.ROLE_ADMIN)
                         .permissions(MockPermissionFactory.getPermissionsResponseDTO())
                         .build()
         );
@@ -42,6 +42,12 @@ public class MockRoleFactory {
     public static RoleResponseDTO getRoleResponseDTO(String roleName) {
         return RoleResponseDTO.builder()
                 .role(roleName)
+                .permissions(MockPermissionFactory.getPermissionsResponseDTO())
+                .build();
+    }
+    public static RoleResponseDTO getRoleResponseDTO() {
+        return RoleResponseDTO.builder()
+                .role(TestConstants.ROLE_ADMIN)
                 .permissions(MockPermissionFactory.getPermissionsResponseDTO())
                 .build();
     }
